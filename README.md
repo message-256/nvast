@@ -1,3 +1,4 @@
-n/a
-i just made this so that i could generate the init for go mod\
-it wont actually be done till tomorrow (theoretically)
+# (N)ot (v)ery (a)bstract (s)yntax (t)reee
+its basically a simpler more general (hopefully) form of an ast
+it encodes as Flat\: a string split along each recursive expression as well as the recursive expressions delimiters (eg: "1*","()")
+and as Inner\: the contents of the expression(inner has an inner to)
