@@ -13,7 +13,7 @@ func compile(input string,delims [2]rune) (Nvast,int,error){
 	var n int
 	var err error
 	var end int
-	if input[0] == '(' {
+	if rune(input[0]) == delims[0] {
 		returned.Inner = append(returned.Inner,Nvast{Flat:nil})
 			returned.Flat = append(returned.Flat,string(delims[0]) + string(delims[1]))
 			returned.Inner[len(returned.Inner)-1] ,n,err = compile(input[1:],delims);
