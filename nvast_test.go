@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"errors"
 	//"errors"
 	"github.com/message-256/nvast"
 )
@@ -64,12 +65,32 @@ func TestCompile(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			input: "{4+51+2+3++5",
+			delim: [2]rune{'{', '}'},
+			err: nvast.ErrExprNoEnd,
+		},
+		{
+			input: "}4+51+2+3++5",
+			delim: [2]rune{'{', '}'},
+			err: nvast.ErrExprKillEarly,
+		},
+		{
+			input: "4+51+2+3++5{",
+			delim: [2]rune{'{', '}'},
+			err: nvast.ErrExprNoEnd,
+		},
+		{
+			input: "4+51+2+3++5}",
+			delim: [2]rune{'{', '}'},
+			err: nvast.ErrExprKillEarly,
+		},
 	}
 	for i := range output {
 		returned, err := nvast.Compile(output[i].input, output[i].delim)
-		if err != output[i].err || !reflect.DeepEqual(output[i].output, returned) {
+		if !errors.Is(err, output[i].err) || !reflect.DeepEqual(output[i].output, returned) {
 			fmt.Print("with input ", output[i].input, " ")
-			fmt.Printf("output = %+v,%v, expected = %+v \n", returned, err, output[i].output)
+			fmt.Printf("output = %+v,%v, expected = %+v,%v \n", returned, err, output[i].output,output[i].err)
 			t.Errorf("test failed\n")
 		}
 	}
