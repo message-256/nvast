@@ -66,6 +66,27 @@ func TestCompile(t *testing.T) {
 			err: nil,
 		},
 		{
+			input: "{4+5}+{2*3+{3*4}}1+2+3++5",
+			delim: [2]rune{'{', '}'},
+			output: nvast.Nvast{
+				Flat: []string{"{}","+","{}", "1+2+3++5"},
+				Inner: []nvast.Nvast{
+					nvast.Nvast{
+						Flat: []string{"4+5"},
+					},
+					nvast.Nvast{
+						Flat: []string{"2*3+","{}"},
+						Inner: []nvast.Nvast{
+							nvast.Nvast{
+								Flat: []string{"3*4"},
+							},
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			input: "{4+51+2+3++5",
 			delim: [2]rune{'{', '}'},
 			err: nvast.ErrExprNoEnd,

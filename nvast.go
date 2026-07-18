@@ -18,7 +18,7 @@ func compile(input string, delims [2]rune) (Nvast, int, error) {
 	var err error
 	var end int
 	for i := 0; i < len(input); i++ {
-		fmt.Println(input)
+		fmt.Println(input,string(input[i]))
 		if rune(input[i]) == delims[0] {
 			returned.Inner = append(returned.Inner,Nvast{})
 			if input[:i] != "" {
@@ -33,6 +33,11 @@ func compile(input string, delims [2]rune) (Nvast, int, error) {
 			input = input[n+i+2:]
 			end+=n+2
 			i = 0
+			//not the prettiest solution
+			//but it works (probably)
+			if rune(input[i]) == delims[1] {
+				return returned,end,collective
+			}
 		} else if rune(input[i]) == delims[1] {
 			fmt.Println("on exit input = ",input[:i])
 			returned.Flat = append(returned.Flat,input[:i])
