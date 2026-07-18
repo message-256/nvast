@@ -2,7 +2,6 @@ package nvast
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Nvast struct {
@@ -18,7 +17,6 @@ func compile(input string, delims [2]rune) (Nvast, int, error) {
 	var err error
 	var end int
 	for i := 0; i < len(input); i++ {
-		fmt.Println(input,string(input[i]))
 		if rune(input[i]) == delims[0] {
 			returned.Inner = append(returned.Inner,Nvast{})
 			if input[:i] != "" {
@@ -39,7 +37,6 @@ func compile(input string, delims [2]rune) (Nvast, int, error) {
 				return returned,end,collective
 			}
 		} else if rune(input[i]) == delims[1] {
-			fmt.Println("on exit input = ",input[:i])
 			returned.Flat = append(returned.Flat,input[:i])
 			return returned,end,collective
 		}
@@ -53,7 +50,6 @@ func compile(input string, delims [2]rune) (Nvast, int, error) {
 // i dont care how long the string is
 func Compile(input string, delims [2]rune) (Nvast, error) {
 	returned, n, err := compile(input, delims)
-	fmt.Println("len(input) = ",len(input),"n = ",n)
 	if n != len(input) {
 		return Nvast{},errors.Join(err,ErrExprKillEarly)
 	}
